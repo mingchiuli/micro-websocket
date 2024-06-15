@@ -4,7 +4,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
 import org.chiu.micro.websocket.utils.JsonUtils;
 import org.chiu.micro.websocket.dto.BlogEntityDto;
-import org.chiu.micro.websocket.rpc.BlogHttpService;
+import org.chiu.micro.websocket.rpc.wrapper.BlogHttpServiceWrapper;
 import org.chiu.micro.websocket.convertor.BlogEditVoConvertor;
 import org.chiu.micro.websocket.convertor.BlogEntityConvertor;
 import org.chiu.micro.websocket.key.KeyFactory;
@@ -40,7 +40,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
 
     private final JsonUtils jsonUtils;
 
-    private final BlogHttpService blogHttpService;
+    private final BlogHttpServiceWrapper blogHttpServiceWrapper;
 
     private String pushActionScript;
 
@@ -155,7 +155,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                     .build();
             paragraphListString = "[]";
         } else {
-            blog = blogHttpService.findByIdAndUserId(id, userId);
+            blog = blogHttpServiceWrapper.findByIdAndUserId(id, userId);
             List<String> paragraphList = List.of(blog.getContent().split(PARAGRAPH_SPLITTER.getInfo()));
             paragraphListString = jsonUtils.writeValueAsString(paragraphList);
         }
