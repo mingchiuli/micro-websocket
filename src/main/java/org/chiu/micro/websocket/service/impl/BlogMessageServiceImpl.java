@@ -12,6 +12,7 @@ import org.chiu.micro.websocket.req.BlogEditPushActionReq;
 import org.chiu.micro.websocket.req.BlogEditPushAllReq;
 import org.chiu.micro.websocket.service.BlogMessageService;
 import org.chiu.micro.websocket.vo.BlogEditVo;
+import org.chiu.micro.websocket.vo.StompMessageDto;
 import org.chiu.micro.websocket.lang.StatusEnum;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -66,8 +67,6 @@ public class BlogMessageServiceImpl implements BlogMessageService {
         String field = req.getField();
         Integer paraNo = req.getParaNo();
 
-        String userKey = KeyFactory.createPushContentIdentityKey(userId, blogId);
-
         String redisKey = KeyFactory.createBlogEditRedisKey(userId, blogId);
 
         Long execute = redisTemplate.execute(RedisScript.of(pushActionScript, Long.class), Collections.singletonList(redisKey),
@@ -79,13 +78,14 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                 Objects.nonNull(field) ? field : null,
                 Objects.nonNull(paraNo) ? paraNo.toString() : null);
 
-        if (Long.valueOf(-1).equals(execute)) {
-            simpMessagingTemplate.convertAndSend("/edits/push/" + userKey, version.toString());
-        }
+        var dto = StompMessageDto.builder()
+                .blogId(blogId)
+                .userId(userId)
+                .version(version)
+                .type(execute.intValue())
+                .build();
 
-        if (Long.valueOf(-2).equals(execute)) {
-            simpMessagingTemplate.convertAndSend("/edits/pull/" + userKey, version.toString());
-        }
+        simpMessagingTemplate.convertAndSend("/edits/msg", jsonUtils.writeValueAsString(dto));
     }
 
     @Override

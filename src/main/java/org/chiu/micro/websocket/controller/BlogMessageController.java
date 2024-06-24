@@ -5,6 +5,7 @@ import org.chiu.micro.websocket.req.BlogEditPushActionReq;
 import org.chiu.micro.websocket.req.BlogEditPushAllReq;
 import org.chiu.micro.websocket.service.BlogMessageService;
 import org.chiu.micro.websocket.vo.BlogEditVo;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,9 +29,13 @@ public class BlogMessageController {
 
     private final BlogMessageService blogMessageService;
 
+    private final ObjectMapper objectMapper;
+
+    @SneakyThrows
     @MessageMapping("/edit/ws/push/action/{userId}")
-    public void pushAction(@RequestBody @Valid BlogEditPushActionReq req,
-                           @PathVariable Long userId) {
+    public void pushAction(@RequestBody String msg,
+                           @DestinationVariable Long userId) {
+        BlogEditPushActionReq req = objectMapper.readValue(msg, BlogEditPushActionReq.class);
         blogMessageService.pushAction(req, userId);
     }
 

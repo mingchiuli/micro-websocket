@@ -9,6 +9,5 @@ import org.springframework.web.service.annotation.GetExchange;
 public interface BlogHttpService {
 
     @GetExchange("/blog/{blogId}/{userId}")
-    Result<BlogEntityDto> findByIdAndUserId(@PathVariable(value = "blogId") Long blogId,
-                                    @PathVariable(value = "userId") Long userId);
+    Result<BlogEntityDto> findByIdAndUserId(@PathVariable(value = "blogId") Long blogId, @PathVariable(value = "userId") Long userId);
 }
