@@ -78,14 +78,16 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                 Objects.nonNull(field) ? field : null,
                 Objects.nonNull(paraNo) ? paraNo.toString() : null);
 
-        var dto = StompMessageDto.builder()
+        if (Long.valueOf(-1).equals(execute) || Long.valueOf(-2).equals(execute)) {
+            var dto = StompMessageDto.builder()
                 .blogId(blogId)
                 .userId(userId)
                 .version(version)
                 .type(execute.intValue())
                 .build();
 
-        simpMessagingTemplate.convertAndSend("/edits/msg", jsonUtils.writeValueAsString(dto));
+            simpMessagingTemplate.convertAndSend("/edits/msg", dto);
+        }
     }
 
     @Override

@@ -20,8 +20,6 @@ import lombok.SneakyThrows;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 @RestController
 @RequiredArgsConstructor
 @Validated
@@ -29,13 +27,10 @@ public class BlogMessageController {
 
     private final BlogMessageService blogMessageService;
 
-    private final ObjectMapper objectMapper;
-
     @SneakyThrows
     @MessageMapping("/edit/ws/push/action/{userId}")
-    public void pushAction(@RequestBody String msg,
+    public void pushAction(@RequestBody @Valid BlogEditPushActionReq req,
                            @DestinationVariable Long userId) {
-        BlogEditPushActionReq req = objectMapper.readValue(msg, BlogEditPushActionReq.class);
         blogMessageService.pushAction(req, userId);
     }
 
