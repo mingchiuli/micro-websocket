@@ -8,12 +8,6 @@ public class KeyFactory {
 
     private KeyFactory() {}
 
-    public static String createPushContentIdentityKey(Long userId, Long blogId) {
-        return Objects.isNull(blogId) ?
-                userId.toString() :
-                userId + "/" + blogId;
-    }
-
     public static String createBlogEditRedisKey(Long userId, Long blogId) {
         return Objects.isNull(blogId) ?
                 TEMP_EDIT_BLOG.getInfo() + userId :
