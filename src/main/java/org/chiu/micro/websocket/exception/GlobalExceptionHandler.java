@@ -1,8 +1,10 @@
 package org.chiu.micro.websocket.exception;
 
-import org.chiu.micro.websocket.lang.Result;
+import java.util.stream.Collectors;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,24 +22,25 @@ public class GlobalExceptionHandler {
     
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public Result<String> handler(MethodArgumentNotValidException e) {
+    public String handler(MethodArgumentNotValidException e) {
+        log.error("entity validate exception------------", e);
         return e.getBindingResult().getAllErrors().stream()
-                .findFirst()
-                .<Result<String>>map(error ->
-                        Result.fail(error.getDefaultMessage(), () -> log.error("entity validate exception------------", e)))
-                .orElseGet(Result::fail);
+                .map(ObjectError::getDefaultMessage)
+                .collect(Collectors.joining(","));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = IllegalArgumentException.class)
-    public Result<String> handler(IllegalArgumentException e) {
-        return Result.fail(e.getMessage(), () -> log.error("Assert exception------------", e));
+    public String handler(IllegalArgumentException e) {
+        log.error("Assert exception------------", e);
+        return e.getMessage();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = RuntimeException.class)
-    public Result<String> handler(RuntimeException e) {
-        return Result.fail(e.getMessage(), () -> log.error("runtime exception------------", e));
+    public String handler(RuntimeException e) {
+        log.error("runtime exception------------", e);
+        return e.getMessage();
     }
 
 }
