@@ -6,8 +6,6 @@ import org.chiu.micro.websocket.lang.Result;
 import org.chiu.micro.websocket.rpc.BlogHttpService;
 import org.springframework.stereotype.Component;
 
-import static org.chiu.micro.websocket.lang.ExceptionMessage.NO_FOUND;
-
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -19,7 +17,7 @@ public class BlogHttpServiceWrapper {
     public BlogEntityDto findByIdAndUserId(Long id, Long userId) {
         Result<BlogEntityDto> result = blogHttpService.findByIdAndUserId(id, userId);
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
         return result.getData();
     }
