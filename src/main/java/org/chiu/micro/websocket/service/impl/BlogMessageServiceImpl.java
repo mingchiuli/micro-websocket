@@ -102,6 +102,9 @@ public class BlogMessageServiceImpl implements BlogMessageService {
         String content = blog.getContent();
 
         List<String> paragraphList = List.of(content.split(PARAGRAPH_SPLITTER.getInfo()));
+        if (content.endsWith(PARAGRAPH_SPLITTER.getInfo())) {
+            paragraphList.add("");
+        }
         String paragraphListString = jsonUtils.writeValueAsString(paragraphList);
 
         redisTemplate.execute(RedisScript.of(pushAllScript),
