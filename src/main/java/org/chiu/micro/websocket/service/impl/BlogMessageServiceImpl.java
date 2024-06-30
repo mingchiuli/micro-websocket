@@ -21,6 +21,7 @@ import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
+import org.springframework.util.StringUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -137,8 +138,12 @@ public class BlogMessageServiceImpl implements BlogMessageService {
             StringBuilder content = new StringBuilder();
 
             for (int i = 1; i <= entries.size(); i++) {
-                content.append(entries.get(PARAGRAPH_PREFIX.getInfo() + i));
+                String idx = PARAGRAPH_PREFIX.getInfo() + i;
+                content.append(entries.get(idx));
                 if (i != entries.size()) {
+                    content.append(PARAGRAPH_SPLITTER.getInfo());
+                }
+                if (i == entries.size() && !StringUtils.hasLength(entries.get(idx))) {
                     content.append(PARAGRAPH_SPLITTER.getInfo());
                 }
             }
