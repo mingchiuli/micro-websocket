@@ -1,4 +1,4 @@
-package org.chiu.micro.websocket.vo;
+package org.chiu.micro.websocket.dto;
 
 import lombok.Builder;
 import lombok.Data;
