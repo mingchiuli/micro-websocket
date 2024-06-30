@@ -86,7 +86,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                 .type(execute.intValue())
                 .build();
 
-            simpMessagingTemplate.convertAndSend("/edits/msg", dto);
+            simpMessagingTemplate.convertAndSend("/edits/msg", dto, Collections.singletonMap("contentType", "application/json"));
         }
     }
 
