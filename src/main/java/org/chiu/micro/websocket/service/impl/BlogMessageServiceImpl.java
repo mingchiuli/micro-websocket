@@ -101,7 +101,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
 
         String content = blog.getContent();
 
-        List<String> paragraphList = List.of(content.split(PARAGRAPH_SPLITTER.getInfo()));
+        List<String> paragraphList = Arrays.asList(content.split(PARAGRAPH_SPLITTER.getInfo()));
         if (content.endsWith(PARAGRAPH_SPLITTER.getInfo())) {
             paragraphList.add("");
         }
