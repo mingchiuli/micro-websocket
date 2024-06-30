@@ -167,12 +167,12 @@ public class BlogMessageServiceImpl implements BlogMessageService {
 
         if (StringUtils.hasLength(paragraphListString)) {
             redisTemplate.execute(RedisScript.of(pushAllScript),
-            Collections.singletonList(redisKey),
-            paragraphListString, ID.getMsg(), USER_ID.getMsg(), TITLE.getMsg(), DESCRIPTION.getMsg(),
-            STATUS.getMsg(), LINK.getMsg(), VERSION.getMsg(),
-                Objects.isNull(blog.getId()) ? "" : blog.getId().toString(), userId.toString(), blog.getTitle(),
-            blog.getDescription(), blog.getStatus().toString(), blog.getLink(), Integer.toString(version),
-            A_WEEK.getInfo());
+                    Collections.singletonList(redisKey),
+                    paragraphListString, ID.getMsg(), USER_ID.getMsg(), TITLE.getMsg(), DESCRIPTION.getMsg(),
+                            STATUS.getMsg(), LINK.getMsg(), VERSION.getMsg(),
+                    Objects.isNull(blog.getId()) ? "" : blog.getId().toString(), userId.toString(), blog.getTitle(),
+                            blog.getDescription(), blog.getStatus().toString(), blog.getLink(), Integer.toString(version),
+                    A_WEEK.getInfo());
         }
 
         return BlogEditVoConvertor.convert(blog, version);
