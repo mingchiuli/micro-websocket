@@ -122,7 +122,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
 
         BlogEntityDto blog;
         int version = -1;
-        String paragraphListString;
+        String paragraphListString = null;
         if (!entries.isEmpty()) {
             blog = BlogEntityConvertor.convert(entries);
             version = Integer.parseInt(entries.get(VERSION.getMsg()));
@@ -148,9 +148,6 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                 }
             }
             blog.setContent(content.toString());
-
-            List<String> paragraphList = List.of(blog.getContent().split(PARAGRAPH_SPLITTER.getInfo()));
-            paragraphListString = jsonUtils.writeValueAsString(paragraphList);
         } else if (Objects.isNull(id)) {
             // 新文章
             blog = BlogEntityDto.builder()
@@ -168,13 +165,15 @@ public class BlogMessageServiceImpl implements BlogMessageService {
             paragraphListString = jsonUtils.writeValueAsString(paragraphList);
         }
 
-        redisTemplate.execute(RedisScript.of(pushAllScript),
-                Collections.singletonList(redisKey),
-                paragraphListString, ID.getMsg(), USER_ID.getMsg(), TITLE.getMsg(), DESCRIPTION.getMsg(),
-                STATUS.getMsg(), LINK.getMsg(), VERSION.getMsg(),
-                    Objects.isNull(blog.getId()) ? "" : blog.getId().toString(), userId.toString(), blog.getTitle(),
-                blog.getDescription(), blog.getStatus().toString(), blog.getLink(), Integer.toString(version),
-                A_WEEK.getInfo());
+        if (StringUtils.hasLength(paragraphListString)) {
+            redisTemplate.execute(RedisScript.of(pushAllScript),
+            Collections.singletonList(redisKey),
+            paragraphListString, ID.getMsg(), USER_ID.getMsg(), TITLE.getMsg(), DESCRIPTION.getMsg(),
+            STATUS.getMsg(), LINK.getMsg(), VERSION.getMsg(),
+                Objects.isNull(blog.getId()) ? "" : blog.getId().toString(), userId.toString(), blog.getTitle(),
+            blog.getDescription(), blog.getStatus().toString(), blog.getLink(), Integer.toString(version),
+            A_WEEK.getInfo());
+        }
 
         return BlogEditVoConvertor.convert(blog, version);
     }
