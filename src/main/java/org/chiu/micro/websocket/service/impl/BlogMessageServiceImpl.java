@@ -18,14 +18,12 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.util.MimeType;
-import org.springframework.util.ResourceUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -89,7 +87,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                 .type(execute.intValue())
                 .build();
 
-            simpMessagingTemplate.convertAndSend("/edits/msg", dto, Collections.singletonMap(MessageHeaders.CONTENT_TYPE, new MimeType("application", "json")));
+            simpMessagingTemplate.convertAndSend("/edits/msg", dto);
         }
     }
 
