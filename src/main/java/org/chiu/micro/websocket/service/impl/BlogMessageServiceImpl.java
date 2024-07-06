@@ -30,6 +30,7 @@ import java.util.*;
 
 import static org.chiu.micro.websocket.lang.Const.*;
 import static org.chiu.micro.websocket.lang.MessageActionFieldEnum.*;
+import static org.chiu.micro.websocket.lang.MessageEnum.*;
 
 @Service
 @RequiredArgsConstructor
@@ -80,7 +81,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                 Objects.nonNull(field) ? field : null,
                 Objects.nonNull(paraNo) ? paraNo.toString() : null);
 
-        if (Long.valueOf(-1).equals(execute) || Long.valueOf(-2).equals(execute)) {
+        if (Long.valueOf(PULL_ALL.getCode()).equals(execute) || Long.valueOf(PUSH_ALL.getCode()).equals(execute)) {
             var dto = StompMessageDto.builder()
                 .blogId(blogId)
                 .userId(userId)
