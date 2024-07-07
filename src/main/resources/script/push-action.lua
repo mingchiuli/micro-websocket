@@ -99,11 +99,6 @@ local allPairs = redis.call('hgetall', key)
 local content = ''
 
 if operateTypeCode == -1 then
-    for i = 1, #allPairs, 2 do
-        if (allPairs[i] == field) then
-            content = allPairs[i + 1]
-        end
-    end
     return redis.call('hset', key, 'status', contentChange, 'version', version)
 elseif operateTypeCode == 0 then
     for i = 1, #allPairs, 2 do
@@ -204,4 +199,6 @@ elseif operateTypeCode == 13 then
     end
     redis.call('hdel', key, 'para::' .. paraNo)
     return redis.call('hset', key, 'para::' .. (paraNo - 1), content .. '\n', 'version', version)
+elseif operateTypeCode == 14 then
+    return redis.call('hset', key, 'sensitiveContentList', contentChange, 'version', version)
 end

@@ -35,7 +35,9 @@ public enum PushActionEnum {
 
     PARA_SPLIT_APPEND(12, "增加一段"),
 
-    PARA_SPLIT_SUBTRACT(13, "减少一段");
+    PARA_SPLIT_SUBTRACT(13, "减少一段"),
+    
+    SENSITIVE_CONTENT_LIST(14, "敏感词操作");
 
     private final Integer code;
 
