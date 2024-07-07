@@ -1,5 +1,7 @@
 package org.chiu.micro.websocket.req;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -28,4 +30,7 @@ public class BlogEditPushAllReq {
 
     @NotNull
     private Integer version;
+
+    @NotNull
+    private List<String> sensitiveContentList;
 }

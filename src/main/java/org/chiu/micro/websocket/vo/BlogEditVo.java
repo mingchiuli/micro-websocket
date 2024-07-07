@@ -1,5 +1,7 @@
 package org.chiu.micro.websocket.vo;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -23,4 +25,6 @@ public class BlogEditVo {
     private Integer status;
 
     private Integer version;
+
+    private List<String> sensitiveContentList;
 }

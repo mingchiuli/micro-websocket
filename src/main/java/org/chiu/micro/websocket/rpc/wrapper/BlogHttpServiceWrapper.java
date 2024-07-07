@@ -1,6 +1,7 @@
 package org.chiu.micro.websocket.rpc.wrapper;
 
 import org.chiu.micro.websocket.dto.BlogEntityDto;
+import org.chiu.micro.websocket.dto.BlogSensitiveContentDto;
 import org.chiu.micro.websocket.exception.MissException;
 import org.chiu.micro.websocket.lang.Result;
 import org.chiu.micro.websocket.rpc.BlogHttpService;
@@ -16,6 +17,14 @@ public class BlogHttpServiceWrapper {
 
     public BlogEntityDto findByIdAndUserId(Long id, Long userId) {
         Result<BlogEntityDto> result = blogHttpService.findByIdAndUserId(id, userId);
+        if (result.getCode() != 200) {
+            throw new MissException(result.getMsg());
+        }
+        return result.getData();
+    }
+
+    public BlogSensitiveContentDto findSensitiveByBlogId(Long id) {
+        Result<BlogSensitiveContentDto> result = blogHttpService.findSensitiveByBlogId(id);
         if (result.getCode() != 200) {
             throw new MissException(result.getMsg());
         }

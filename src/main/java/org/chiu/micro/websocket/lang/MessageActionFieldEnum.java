@@ -21,7 +21,9 @@ public enum MessageActionFieldEnum {
 
     ID("id"),
 
-    VERSION("version");
+    VERSION("version"),
+    
+    SENSITIVE_CONTENT_LIST("sensitiveContentList");
     
     private final String msg;
 }

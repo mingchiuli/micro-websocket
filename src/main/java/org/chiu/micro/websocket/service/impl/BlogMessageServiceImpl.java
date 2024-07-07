@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
 import org.chiu.micro.websocket.utils.JsonUtils;
 import org.chiu.micro.websocket.dto.BlogEntityDto;
+import org.chiu.micro.websocket.dto.BlogSensitiveContentDto;
 import org.chiu.micro.websocket.dto.StompMessageDto;
 import org.chiu.micro.websocket.rpc.wrapper.BlogHttpServiceWrapper;
 import org.chiu.micro.websocket.convertor.BlogEditVoConvertor;
@@ -22,6 +23,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,6 +47,8 @@ public class BlogMessageServiceImpl implements BlogMessageService {
     private final ResourceLoader resourceLoader;
 
     private final JsonUtils jsonUtils;
+
+    private final ObjectMapper objectMapper;
 
     private final BlogHttpServiceWrapper blogHttpServiceWrapper;
 
@@ -113,13 +119,14 @@ public class BlogMessageServiceImpl implements BlogMessageService {
         redisTemplate.execute(RedisScript.of(pushAllScript),
                 Collections.singletonList(redisKey),
                 paragraphListString, ID.getMsg(), USER_ID.getMsg(), TITLE.getMsg(), DESCRIPTION.getMsg(),
-                STATUS.getMsg(), LINK.getMsg(), VERSION.getMsg(),
+                STATUS.getMsg(), LINK.getMsg(), VERSION.getMsg(), SENSITIVE_CONTENT_LIST.getMsg(),
                 Objects.isNull(blog.getId()) ? "" : blog.getId().toString(), userId.toString(), blog.getTitle(),
-                blog.getDescription(), blog.getStatus().toString(), blog.getLink(), blog.getVersion().toString(),
+                blog.getDescription(), blog.getStatus().toString(), blog.getLink(), blog.getVersion().toString(), jsonUtils.writeValueAsString(blog.getSensitiveContentList()),
                 A_WEEK.getInfo());
     }
 
     @Override
+    @SneakyThrows
     public BlogEditVo findEdit(Long id, Long userId) {
 
         String redisKey = KeyFactory.createBlogEditRedisKey(userId, id);
@@ -127,6 +134,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                 .entries(redisKey);
 
         BlogEntityDto blog;
+        List<String> sensitiveContentList;
         int version = -1;
         String paragraphListString = null;
         if (!entries.isEmpty()) {
@@ -154,6 +162,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                 }
             }
             blog.setContent(content.toString());
+            sensitiveContentList = objectMapper.readValue(entries.get(SENSITIVE_CONTENT_LIST.getMsg()), new TypeReference<List<String>>() {});
         } else if (Objects.isNull(id)) {
             // 新文章
             blog = BlogEntityDto.builder()
@@ -165,10 +174,18 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                     .title("")
                     .build();
             paragraphListString = "[]";
+            sensitiveContentList = new ArrayList<>();
         } else {
             blog = blogHttpServiceWrapper.findByIdAndUserId(id, userId);
             List<String> paragraphList = List.of(blog.getContent().split(PARAGRAPH_SPLITTER.getInfo()));
             paragraphListString = jsonUtils.writeValueAsString(paragraphList);
+            BlogSensitiveContentDto sensitiveContentDto = blogHttpServiceWrapper.findSensitiveByBlogId(id);
+            String contentList = sensitiveContentDto.getSensitiveContentList();
+            if (StringUtils.hasLength(contentList)) {
+                sensitiveContentList = Arrays.stream(contentList.split(",")).toList();
+            } else {
+                sensitiveContentList = new ArrayList<>();
+            }
         }
 
         if (StringUtils.hasLength(paragraphListString)) {
@@ -181,7 +198,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                     A_WEEK.getInfo());
         }
 
-        return BlogEditVoConvertor.convert(blog, version);
+        return BlogEditVoConvertor.convert(blog, version, sensitiveContentList);
     }
 
 }
