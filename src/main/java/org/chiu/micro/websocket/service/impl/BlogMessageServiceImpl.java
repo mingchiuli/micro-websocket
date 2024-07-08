@@ -195,9 +195,9 @@ public class BlogMessageServiceImpl implements BlogMessageService {
             redisTemplate.execute(RedisScript.of(pushAllScript),
                     Collections.singletonList(redisKey),
                     paragraphListString, ID.getMsg(), USER_ID.getMsg(), TITLE.getMsg(), DESCRIPTION.getMsg(),
-                            STATUS.getMsg(), LINK.getMsg(), VERSION.getMsg(),
+                            STATUS.getMsg(), LINK.getMsg(), VERSION.getMsg(), SENSITIVE_CONTENT_LIST.getMsg(),
                     Objects.isNull(blog.getId()) ? "" : blog.getId().toString(), userId.toString(), blog.getTitle(),
-                            blog.getDescription(), blog.getStatus().toString(), blog.getLink(), Integer.toString(version),
+                            blog.getDescription(), blog.getStatus().toString(), blog.getLink(), Integer.toString(version), jsonUtils.writeValueAsString(sensitiveContentList),
                     A_WEEK.getInfo());
         }
 
