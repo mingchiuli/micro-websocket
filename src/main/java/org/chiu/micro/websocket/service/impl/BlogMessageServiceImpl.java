@@ -52,6 +52,8 @@ public class BlogMessageServiceImpl implements BlogMessageService {
 
     private final BlogHttpServiceWrapper blogHttpServiceWrapper;
 
+    private TypeReference<List<String>> type = new TypeReference<>() {};
+
     private String pushActionScript;
 
     private String pushAllScript;
@@ -139,7 +141,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
         String paragraphListString = null;
         if (!entries.isEmpty()) {
             blog = BlogEntityConvertor.convert(entries);
-            sensitiveContentList = objectMapper.readValue(entries.get(SENSITIVE_CONTENT_LIST.getMsg()), new TypeReference<List<String>>() {});
+            sensitiveContentList = objectMapper.readValue(entries.get(SENSITIVE_CONTENT_LIST.getMsg()), type);
             version = Integer.parseInt(entries.get(VERSION.getMsg()));
 
             entries.remove(SENSITIVE_CONTENT_LIST.getMsg());
