@@ -139,8 +139,10 @@ public class BlogMessageServiceImpl implements BlogMessageService {
         String paragraphListString = null;
         if (!entries.isEmpty()) {
             blog = BlogEntityConvertor.convert(entries);
+            sensitiveContentList = objectMapper.readValue(entries.get(SENSITIVE_CONTENT_LIST.getMsg()), new TypeReference<List<String>>() {});
             version = Integer.parseInt(entries.get(VERSION.getMsg()));
 
+            entries.remove(SENSITIVE_CONTENT_LIST.getMsg());
             entries.remove(ID.getMsg());
             entries.remove(USER_ID.getMsg());
             entries.remove(DESCRIPTION.getMsg());
@@ -162,7 +164,6 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                 }
             }
             blog.setContent(content.toString());
-            sensitiveContentList = objectMapper.readValue(entries.get(SENSITIVE_CONTENT_LIST.getMsg()), new TypeReference<List<String>>() {});
         } else if (Objects.isNull(id)) {
             // 新文章
             blog = BlogEntityDto.builder()
