@@ -12,6 +12,6 @@ public interface BlogHttpService {
     @GetExchange("/blog/{blogId}/{userId}")
     Result<BlogEntityDto> findByIdAndUserId(@PathVariable(value = "blogId") Long blogId, @PathVariable(value = "userId") Long userId);
 
-    @GetExchange("/blog/sensitive/{userId}")
+    @GetExchange("/blog/sensitive/{blogId}")
     Result<BlogSensitiveContentDto> findSensitiveByBlogId(@PathVariable(value = "blogId") Long blogId);
 }
