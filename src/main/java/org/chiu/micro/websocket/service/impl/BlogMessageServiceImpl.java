@@ -183,12 +183,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
             List<String> paragraphList = List.of(blog.getContent().split(PARAGRAPH_SPLITTER.getInfo()));
             paragraphListString = jsonUtils.writeValueAsString(paragraphList);
             BlogSensitiveContentDto sensitiveContentDto = blogHttpServiceWrapper.findSensitiveByBlogId(id);
-            String contentList = sensitiveContentDto.getSensitiveContentList();
-            if (StringUtils.hasLength(contentList)) {
-                sensitiveContentList = Arrays.stream(contentList.split(",")).toList();
-            } else {
-                sensitiveContentList = new ArrayList<>();
-            }
+            sensitiveContentList = sensitiveContentDto.getSensitiveContent();
         }
 
         if (StringUtils.hasLength(paragraphListString)) {
