@@ -52,7 +52,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
 
     private final BlogHttpServiceWrapper blogHttpServiceWrapper;
 
-    private TypeReference<List<String>> type = new TypeReference<>() {};
+    private final TypeReference<List<String>> type = new TypeReference<>() {};
 
     private String pushActionScript;
 
