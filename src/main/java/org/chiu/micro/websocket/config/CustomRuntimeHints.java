@@ -13,6 +13,5 @@ public class CustomRuntimeHints implements RuntimeHintsRegistrar {
         hints.serialization().registerType(StompMessageDto.class);
 
         hints.resources().registerPattern("script/push-action.lua");
-        hints.resources().registerPattern("script/push-all.lua");
     }
 }

@@ -11,12 +11,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Const {
 
-    A_WEEK("604899"),
-
-    PARAGRAPH_PREFIX("para::"),
-
-    PARAGRAPH_SPLITTER("\n\n"),
-
     TEMP_EDIT_BLOG("temp_edit_blog:");
 
     private final String info;
