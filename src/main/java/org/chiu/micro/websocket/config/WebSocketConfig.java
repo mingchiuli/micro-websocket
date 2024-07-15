@@ -3,6 +3,7 @@ package org.chiu.micro.websocket.config;
 import lombok.RequiredArgsConstructor;
 
 import org.chiu.micro.websocket.config.interceptor.CSRFChannelInterceptor;
+import org.chiu.micro.websocket.config.interceptor.MessageInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -22,6 +23,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final CSRFChannelInterceptor csrfChannelInterceptor;
+
+    private final MessageInterceptor messageInterceptor;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -43,6 +46,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(csrfChannelInterceptor);
+        registration.interceptors(csrfChannelInterceptor, messageInterceptor);
     }
 }
