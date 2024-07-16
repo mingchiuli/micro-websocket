@@ -4,8 +4,6 @@ package org.chiu.micro.websocket.config;
 import org.chiu.micro.websocket.dto.StompMessageDto;
 import org.springframework.aot.hint.*;
 
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-
 
 public class CustomRuntimeHints implements RuntimeHintsRegistrar {
 
@@ -13,7 +11,6 @@ public class CustomRuntimeHints implements RuntimeHintsRegistrar {
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
         // Register resources
         hints.serialization().registerType(StompMessageDto.class);
-        hints.serialization().registerType(PreAuthenticatedAuthenticationToken.class);
 
         hints.resources().registerPattern("script/push-action.lua");
     }
