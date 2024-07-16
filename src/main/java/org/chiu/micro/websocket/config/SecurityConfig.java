@@ -17,7 +17,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private static final String[] URL_WHITELIST = {
-        "/edit/ws/**"
+        "/edit/ws/**",
+        "/actuator/**"
     };
 
     @Bean
