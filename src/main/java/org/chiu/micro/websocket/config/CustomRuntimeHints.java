@@ -4,7 +4,7 @@ package org.chiu.micro.websocket.config;
 import org.chiu.micro.websocket.dto.StompMessageDto;
 import org.springframework.aot.hint.*;
 
-org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 
 public class CustomRuntimeHints implements RuntimeHintsRegistrar {
