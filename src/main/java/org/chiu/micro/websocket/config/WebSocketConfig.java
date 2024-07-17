@@ -29,7 +29,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/edit/ws")
-                .setAllowedOriginPatterns("*");
+                .setAllowedOriginPatterns("https://chiu.wiki");
     }
 
     @Override
