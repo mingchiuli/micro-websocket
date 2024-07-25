@@ -12,7 +12,6 @@ import org.springframework.context.annotation.ImportRuntimeHints;
 public class MicroWebSocketApplication {
 
 	public static void main(String[] args) {
-				TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
 				SpringApplication.run(MicroWebSocketApplication.class, args);
 	}
 
