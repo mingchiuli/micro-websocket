@@ -13,4 +13,10 @@ public class KeyFactory {
                 TEMP_EDIT_BLOG.getInfo() + userId :
                 TEMP_EDIT_BLOG.getInfo() + userId + ":" + blogId;
     }
+
+    public static String createSubscriptionKey(Long userId, Long blogId) {
+        return Objects.isNull(blogId) ?
+                String.valueOf(userId) :
+                userId + "/" + blogId;
+    }
 }

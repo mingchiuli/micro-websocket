@@ -69,7 +69,8 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                 .type(execute.intValue())
                 .build();
 
-            simpMessagingTemplate.convertAndSend("/edits/msg", dto);
+            String subscriptionKey = KeyFactory.createBlogEditRedisKey(userId, blogId);
+            simpMessagingTemplate.convertAndSend("/edits/" + subscriptionKey, dto);
         }
     }
 
