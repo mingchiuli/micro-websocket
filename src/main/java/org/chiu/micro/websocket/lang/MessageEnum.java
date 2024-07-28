@@ -7,11 +7,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum MessageEnum {
 
-    PUSH_ALL(-1, "推"),
+    PUSH_ALL(-1L, "推"),
 
-    PULL_ALL(-2, "拉");
+    PULL_ALL(-2L, "拉");
 
-    private final Integer code;
+    private final Long code;
 
     private final String description;
 }

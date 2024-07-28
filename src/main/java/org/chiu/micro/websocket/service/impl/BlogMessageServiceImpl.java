@@ -2,8 +2,10 @@ package org.chiu.micro.websocket.service.impl;
 
 import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
+
 import org.chiu.micro.websocket.dto.StompMessageDto;
 import org.chiu.micro.websocket.key.KeyFactory;
+import org.chiu.micro.websocket.lang.MessageEnum;
 import org.chiu.micro.websocket.req.BlogEditPushActionReq;
 import org.chiu.micro.websocket.service.BlogMessageService;
 import org.springframework.core.io.Resource;
@@ -17,8 +19,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-
-import static org.chiu.micro.websocket.lang.MessageEnum.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +33,10 @@ public class BlogMessageServiceImpl implements BlogMessageService {
     private final ResourceLoader resourceLoader;
 
     private String pushActionScript;
+
+    private Set<Long> enumSet = Stream.of(MessageEnum.values())
+                .map(MessageEnum::getCode)
+                .collect(Collectors.toSet());
 
     @PostConstruct
     @SneakyThrows
@@ -61,7 +67,7 @@ public class BlogMessageServiceImpl implements BlogMessageService {
                 Objects.nonNull(field) ? field : null,
                 Objects.nonNull(paraNo) ? paraNo.toString() : null);
 
-        if (Long.valueOf(PULL_ALL.getCode()).equals(execute) || Long.valueOf(PUSH_ALL.getCode()).equals(execute)) {
+        if (enumSet.contains(execute)) {
             var dto = StompMessageDto.builder()
                 .blogId(blogId)
                 .userId(userId)
