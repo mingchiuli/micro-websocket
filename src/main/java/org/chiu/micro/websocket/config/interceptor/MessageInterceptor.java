@@ -35,6 +35,7 @@ public class MessageInterceptor implements ChannelInterceptor {
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
             String token = Optional.ofNullable(accessor.getFirstNativeHeader("Authorization")).orElse("");
             AuthDto authDto = authHttpServiceWrapper.getAuthentication(token);
+            System.out.println(authDto.toString());
             PreAuthenticatedAuthenticationToken authentication = new PreAuthenticatedAuthenticationToken(authDto.getUserId(), null, AuthorityUtils.createAuthorityList(authDto.getAuthorities()));
             accessor.setUser(authentication);
         }
