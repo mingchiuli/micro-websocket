@@ -6,10 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.context.annotation.ImportRuntimeHints;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.socket.EnableWebSocketSecurity;
 
 @SpringBootApplication(exclude = { UserDetailsServiceAutoConfiguration.class }, proxyBeanMethods = false)
 @ImportRuntimeHints({ CustomRuntimeHints.class })
 @EnableMethodSecurity
+@EnableWebSocketSecurity
 public class MicroWebSocketApplication {
 
 	public static void main(String[] args) {
