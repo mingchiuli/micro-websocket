@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.security.authorization.AuthorizationManager;
-import org.springframework.security.config.annotation.web.socket.EnableWebSocketSecurity;
 import org.springframework.security.messaging.access.intercept.MessageMatcherDelegatingAuthorizationManager;
 
 /**
@@ -14,7 +13,6 @@ import org.springframework.security.messaging.access.intercept.MessageMatcherDel
  * @create 2023-01-15 11:38 am
  */
 @Configuration
-@EnableWebSocketSecurity
 public class WebSocketSecurityConfig {
 
     @Bean
